@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import MapKit
 
-class HomeTableViewController: UITableViewController, MKMapViewDelegate {
+class HomeViewController: UIViewController, MKMapViewDelegate {
  
     //MARK: Proprieties
 
@@ -17,6 +17,7 @@ class HomeTableViewController: UITableViewController, MKMapViewDelegate {
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var heightSizeConstant: NSLayoutConstraint!
     @IBOutlet weak var buttonToCenter: UIBarButtonItem!
+    @IBOutlet var tableView: UITableView!
     
     let screenSize: CGFloat = UIScreen.main.bounds.height
     let paddingForMap: CGFloat = 24
@@ -35,6 +36,7 @@ class HomeTableViewController: UITableViewController, MKMapViewDelegate {
         //mapView.delegate = ViewController
         mapView.delegate = self
         tableView.delegate = self
+        tableView.dataSource = self
         
         mapView.translatesAutoresizingMaskIntoConstraints = false
 
@@ -59,28 +61,11 @@ class HomeTableViewController: UITableViewController, MKMapViewDelegate {
     
     //MARK: UITableViewDelegate
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
-    }
-    
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
-  
-        cell.backgroundColor = .green
-         
-        return cell
-        
-    }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-                                
-        let tableViewHeight: CGFloat = tableView.frame.height
-        
-        let adaptedHeight: CGFloat = tableViewHeight * TableViewCell.ratio
-        
-        return adaptedHeight
-    }
+    
+ 
+//
+    
     
     //MARK: IBActions
     @IBAction func buttonToCenterTapped(_ sender: Any) {
@@ -89,4 +74,33 @@ class HomeTableViewController: UITableViewController, MKMapViewDelegate {
         mapView.region.span = mapSpan
         
     }
+}
+    
+extension HomeViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+    
+extension HomeViewController: UITableViewDataSource {
+   
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+       
+        return 10
+    }
+    
+   
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UITableViewCell", for: indexPath)
+  
+        cell.backgroundColor = .white
+         
+        return cell
+        
+    }
+    
+    
 }
